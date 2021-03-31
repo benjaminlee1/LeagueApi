@@ -12,7 +12,7 @@ function App() {
 
   function getLastFiveUserMatches() {
     axios
-      .get("http://localhost:5002/getLastFiveMatches", {
+      .get("http://leepinhsun.com/getLastFiveMatches", {
         headers: {
           Username: username,
         },

@@ -14,6 +14,8 @@ const server = express();
 // Middleware uses
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+server.use(cors());
+server.use("/", express.static("build"));
 
 server.get("/getLastFiveMatches", async function (req, res) {
   // Fail if username is undefined
@@ -72,11 +74,11 @@ server.get("/getLastFiveMatches", async function (req, res) {
     res.setHeader("Content-Type", "application/json");
     res.status(200).end(JSON.stringify({ payload }));
   } catch (err) {
-    res.status(500).send(err);
+    res.send(err);
   }
 });
 
-server.listen(PORT, cors(), (err) => {
+server.listen(PORT, (err) => {
   if (err) {
     console.log("err");
   }
