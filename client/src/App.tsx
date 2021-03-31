@@ -1,19 +1,28 @@
-import { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
-import Request from "request";
+import React, { useState } from "react";
+import { Button, TextField, Box } from "@material-ui/core";
+import { PlayerMatchSummaryDTO } from "./types";
+import MatchSummary from "./components/MatchSummary";
+import axios from "axios";
 
 import "./App.css";
 
 function App() {
   const [username, setUserName] = useState("");
-  async function getLastFiveUserMatches() {
-    const resp = await fetch("http://localhost:5001/getLastFiveMatches", {
-      method: "GET",
-      mode: "no-cors",
-    });
+  const [matchData, setMatchData] = useState<Array<PlayerMatchSummaryDTO>>([]);
 
-    console.log("Hello\n");
-    console.log(resp);
+  function getLastFiveUserMatches() {
+    axios
+      .get("http://localhost:5002/getLastFiveMatches", {
+        headers: {
+          Username: username,
+        },
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          setMatchData(resp.data);
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -26,6 +35,12 @@ function App() {
         {username}
       </TextField>
       <Button onClick={getLastFiveUserMatches}>Search</Button>
+      <p>Stats</p>
+      <Box>
+        {matchData.length > 0
+          ? matchData.map((data, id) => <MatchSummary key={id} data={data} />)
+          : null}
+      </Box>
     </div>
   );
 }
