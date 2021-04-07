@@ -4,7 +4,7 @@
   "description": "server api",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "buildAndRun.sh"
   },
   "author": "",
   "license": "ISC",
